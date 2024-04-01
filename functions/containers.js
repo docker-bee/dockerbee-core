@@ -65,7 +65,16 @@ const deleteContainer = async (id,stopfirst) => {
 
 
 
-
+// get logs of a container max 10 last lines
+const getLogs = async (id) => {
+  try {
+    const container = docker.getContainer(id);
+    const logs = await container.logs({stdout: true, stderr: true, tail: 10, follow: false});
+    return logs;
+  } catch (err) {
+    return err;
+  }
+}
 
 
 
@@ -74,6 +83,7 @@ export {
   createContainer,
   runContainer,
   stopContainer,
-  deleteContainer
+  getLogs,
+  deleteContainer,
 }
 
