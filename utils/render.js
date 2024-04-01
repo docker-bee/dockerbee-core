@@ -1,5 +1,7 @@
 const Table = require('cli-table');
 const colors = require('colors');
+const { getContainers } = require('../functions/containers');
+const { startHandling } = require('./handelKeyPress');
 
 // instantiate
 const table = new Table({
@@ -19,8 +21,10 @@ const menu = new Table({
 
 
 
-const render = ({content,selected}) => {
-  content.then((containers) => {
+const render = async ({content,selected,refresh}) => {
+
+  const newContent = getContainers(true);
+  newContent.then((containers) => {
     table.length = 0;
     containers.forEach((container, i) => {
       table.push([
@@ -35,6 +39,7 @@ const render = ({content,selected}) => {
     console.log('\x1Bc');
     console.log(table.toString());
     console.log(menu.toString());
+
   });
 
 };

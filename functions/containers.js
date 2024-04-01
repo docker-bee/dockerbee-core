@@ -1,5 +1,5 @@
 
-const Docker = require('dockerode');
+import  Docker from 'dockerode'
 const docker = new Docker();
 
 const getContainers = async (all) => {
@@ -12,24 +12,68 @@ const getContainers = async (all) => {
 }
 
 
-const createContainer = async (req, res) => {
+const createContainer = async (name ) => {
   try {
-    const imageName = req.body.image_name;
     const container = await docker.createContainer({
-      Image: imageName,
+      Image: name,
       AttachStdout: true,
       AttachStderr: true,
       Tty: true,
     });
     await container.start();
-    res.send('Container created successfully!');
   } catch (err) {
-    res.status(500).send('Internal Server Error');
+    return err;
+  }
+}
+
+
+const runContainer = async (id) => {
+  try {
+    const container = docker.getContainer(id);
+    await container.start();
+    return "Container started";
+  } catch (err) {
+    return err;
+  }
+}
+
+const stopContainer = async (id) => {
+  try {
+    const container = docker.getContainer(id);
+    await container.stop();
+    return "Container stopped";
+  } catch (err) {
+    return err
   }
 }
 
 
 
-exports.createContainer = createContainer;
-exports.getContainers = getContainers;
+const deleteContainer = async (id,stopfirst) => {
+  try {
+    const container = docker.getContainer(id);
+    if(stopfirst){
+      await container.stop();
+    }
+    await container.remove();
+    return "Container deleted";
+  } catch (err) {
+    console.log(err)
+    return err
+  }
+}
+
+
+
+
+
+
+
+export {
+  getContainers,
+  createContainer,
+  runContainer,
+  stopContainer,
+  deleteContainer
+}
 

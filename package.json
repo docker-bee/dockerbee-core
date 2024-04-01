@@ -1,7 +1,10 @@
 {
+  "type": "module",
   "dependencies": {
     "cli-table": "^0.3.11",
+    "cli-table3": "^0.6.4",
     "dockerode": "^4.0.2",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "inquirer": "^9.2.17"
   }
 }
