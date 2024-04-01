@@ -73,13 +73,13 @@ const containersSection=()=>{
         loop:false,
       })
     
+    const isRunning = containers.find(c=>c.Id == Selectcontainers.action).State == "running"
     const action = await inquirer.prompt({
       type:"list",
       name: "action",
       message : " ",
       choices:[
-        {name:"\uf144 Run".green,value:"run"},
-        {name:"\uf28d Stop",value:"stop"},
+        {name: !isRunning ? "\uf144 Run".green : "\uf28d Stop", value: isRunning ? "stop" : "run"},
         {name:"\uf1f8 Delete".red,value:"delete"},
         new inquirer.Separator(),
         {name:"Quit",value:"quit"},
@@ -97,6 +97,15 @@ const containersSection=()=>{
         containersSection()
         break;
       case "delete":
+        const confirm = await inquirer.prompt({
+          type:"confirm",
+          name: "action",
+          message : "Are you sure you want to delete this container?",
+        })
+        if(!confirm.action){
+          containersSection()
+          break;
+        }
         await deleteContainer(Selectcontainers.action,containers.find(c=>c.Id == Selectcontainers.action).State == "running")
         await setTimeout(()=>{},3000)
         containersSection()
