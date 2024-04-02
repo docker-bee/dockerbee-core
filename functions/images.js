@@ -8,7 +8,7 @@ const getImages = async () => {
     } catch (err) {
         return(err);
     }
-    }
+}
 
 const createImage = async (name ) => {
     try {
