@@ -12,19 +12,9 @@ const getContainers = async (all) => {
 }
 
 
-const createContainer = async (name ) => {
-  try {
-    const container = await docker.createContainer({
-      Image: name,
-      AttachStdout: true,
-      AttachStderr: true,
-      Tty: true,
-    });
-    await container.start();
-  } catch (err) {
-    return err;
-  }
-}
+
+
+
 
 
 const runContainer = async (id) => {
@@ -80,7 +70,6 @@ const getLogs = async (id) => {
 
 export {
   getContainers,
-  createContainer,
   runContainer,
   stopContainer,
   getLogs,
