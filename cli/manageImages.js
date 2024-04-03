@@ -1,9 +1,8 @@
 import inquirer from 'inquirer';
-import { createContainer, deleteContainer, getContainers, runContainer, stopContainer } from '../functions/containers.js';
 import colors from 'colors';
 import readline from 'readline'
 import { setTimeout } from 'timers/promises';
-import { deleteImage, getImages } from '../functions/images.js';
+import { createContainer, deleteImage, generateContainerNameFromImageName, getImageName, getImages } from '../functions/images.js';
 import { createTable, field } from './home.js';
 
 export const imagesSection=()=>{
@@ -15,7 +14,7 @@ export const imagesSection=()=>{
       field(c.Size,15),
     ].join(" | "))
 
-    const Selectcontainers = await inquirer.prompt({
+    const SelectImages = await inquirer.prompt({
         type:"list",
         name: "action",
         message : " ",
@@ -38,7 +37,9 @@ export const imagesSection=()=>{
 
     switch(action.action){
       case "create":
-        await createContainer(Selectcontainers.action)
+        const imageName = await getImageName(SelectImages.action)
+        const containerName = generateContainerNameFromImageName(imageName)
+        await createContainer(SelectImages.action,containerName)
         imagesSection()
         break;
       case "delete":
@@ -48,10 +49,10 @@ export const imagesSection=()=>{
           message : "Are you sure you want to delete this image?",
         })
         if(!confirm.action){
-          imagesSectionk()
+          imagesSection()
           break;
         }
-        await deleteImage(Selectcontainers.action)
+        await deleteImage(SelectImages.action)
         await setTimeout(()=>{},3000)
         imagesSection()
         break;
