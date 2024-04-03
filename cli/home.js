@@ -1,13 +1,9 @@
 import inquirer from 'inquirer';
-import { createContainer, deleteContainer, getContainers, runContainer, stopContainer } from '../functions/containers.js';
 import colors from 'colors';
 import readline from 'readline'
 import { setTimeout } from 'timers/promises';
-import { deleteImage, getImages } from '../functions/images.js';
 import { containersSection } from './manageContainers.js';
 import { imagesSection } from './manageImages.js';
-
-
 
 const sections = [
   {

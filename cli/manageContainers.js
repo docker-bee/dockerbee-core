@@ -1,21 +1,22 @@
 import inquirer from 'inquirer';
-import { createContainer, deleteContainer, getContainers, runContainer, stopContainer } from '../functions/containers.js';
+import {  deleteContainer, getContainers, runContainer, stopContainer } from '../functions/containers.js';
 import colors from 'colors';
 import readline from 'readline'
 import { setTimeout } from 'timers/promises';
-import { deleteImage, getImages } from '../functions/images.js';
 import { createTable, field } from './home.js';
 
 export const containersSection=()=>{
   let containerHeader = ["Name","Image","Status","Port"]
   createTable(containerHeader) 
   getContainers({all:true}).then(async(containers) => {
-    const table = containers.map(c=>[
+    const table = containers.map(c=>{
+      // console.log(c)
+      return [
       field(c.Names[0].slice(1),15),
       field(c.Image,15),
       field(c.State == "running" ? `\uf28b ${c.State}`.green: `\uf144 ${c.State} `.gray ,25),
       field(c.Ports.length > 0 ? c?.Ports[0].PrivatePort : "",15),
-    ].join(" | "))
+    ].join(" | ")})
 
     const Selectcontainers = await inquirer.prompt({
         type:"list",
